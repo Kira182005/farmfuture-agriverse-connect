@@ -25,8 +25,6 @@ const App = () => (
           <Route path="/irrigation-management" element={<IrrigationManagement />} />
           <Route path="/social-network" element={<SocialNetwork />} />
           <Route path="/ai-analytics" element={<AIAnalytics />} />
-          <Route path="/products" element={<NotFound />} />
-          <Route path="/products/:category" element={<NotFound />} />
           <Route path="/our-story" element={<NotFound />} />
           <Route path="/about-us" element={<NotFound />} />
           <Route path="/contact" element={<NotFound />} />
