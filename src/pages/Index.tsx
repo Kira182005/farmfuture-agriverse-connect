@@ -5,7 +5,6 @@ import Hero from '@/components/Hero';
 import { FeatureSection } from '@/components/FeaturePanel';
 import ProductCategories from '@/components/ProductCategories';
 import { TestimonialCarousel } from '@/components/TestimonialCarousel';
-import FeaturedPublications from '@/components/FeaturedPublications';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -17,7 +16,6 @@ const Index = () => {
         <FeatureSection />
         <ProductCategories />
         <TestimonialCarousel />
-        <FeaturedPublications />
       </main>
       <Footer />
     </div>
