@@ -1,0 +1,110 @@
+
+import React from 'react';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Clock } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+
+const seasonalData = [
+  { month: 'Jan', yield: 30 },
+  { month: 'Feb', yield: 40 },
+  { month: 'Mar', yield: 45 },
+  { month: 'Apr', yield: 55 },
+  { month: 'May', yield: 70 },
+  { month: 'Jun', yield: 80 },
+  { month: 'Jul', yield: 100 },
+  { month: 'Aug', yield: 90 },
+  { month: 'Sep', yield: 75 },
+  { month: 'Oct', yield: 60 },
+  { month: 'Nov', yield: 50 },
+  { month: 'Dec', yield: 35 },
+];
+
+const SeasonalPlanning = () => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      <main className="flex-grow bg-gray-50 py-10">
+        <div className="farm-container">
+          <div className="flex items-center gap-4 mb-8">
+            <Clock size={48} className="text-farm-darkgreen" />
+            <h1 className="text-4xl font-bold text-farm-darkgreen">Seasonal Planning</h1>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <Card className="lg:col-span-2 shadow-lg">
+              <CardHeader>
+                <CardTitle>Crop Yield Forecast</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[400px]">
+                  <ChartContainer config={{ yield: { theme: { light: '#1B5E20', dark: '#4CAF50' } } }}>
+                    <AreaChart data={seasonalData}>
+                      <defs>
+                        <linearGradient id="colorYield" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#1B5E20" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#1B5E20" stopOpacity={0.1}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Area type="monotone" dataKey="yield" stroke="#1B5E20" fillOpacity={1} fill="url(#colorYield)" />
+                    </AreaChart>
+                  </ChartContainer>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="space-y-6">
+              <Card className="shadow-lg">
+                <CardHeader className="pb-2">
+                  <CardTitle>Upload Field Image</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 w-full flex flex-col items-center justify-center">
+                      <p className="text-gray-500 mb-2">Upload an image of your field</p>
+                      <Button className="bg-farm-orange hover:bg-opacity-90">
+                        Upload Image
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="shadow-lg">
+                <CardHeader className="pb-2">
+                  <CardTitle>Seasonal Recommendations</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    <li className="flex items-center gap-2">
+                      <span className="bg-farm-darkgreen h-2 w-2 rounded-full"></span>
+                      <span>Rotate corn with soybeans in Field A</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="bg-farm-darkgreen h-2 w-2 rounded-full"></span>
+                      <span>Begin barley planting mid-April</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="bg-farm-darkgreen h-2 w-2 rounded-full"></span>
+                      <span>Implement cover crops in Field C</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default SeasonalPlanning;

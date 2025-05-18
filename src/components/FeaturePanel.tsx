@@ -1,73 +1,61 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Clock, Droplet, Users, BarChart2 } from "lucide-react";
 
 interface FeaturePanelProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  link: string;
 }
 
-const FeaturePanel = ({ icon, title, description }: FeaturePanelProps) => {
+const FeaturePanel = ({ icon, title, description, link }: FeaturePanelProps) => {
   return (
-    <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <CardHeader className="flex items-center pb-2">
-        <div className="text-farm-darkgreen w-20 h-20 mb-4">
-          {icon}
-        </div>
-        <CardTitle className="text-xl text-farm-darkgreen font-poppins">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription className="text-gray-600 text-center">
-          {description}
-        </CardDescription>
-      </CardContent>
-    </Card>
+    <Link to={link} className="block h-full">
+      <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full cursor-pointer hover:scale-105 transition-transform">
+        <CardHeader className="flex items-center pb-2">
+          <div className="text-farm-darkgreen w-20 h-20 mb-4">
+            {icon}
+          </div>
+          <CardTitle className="text-xl text-farm-darkgreen font-poppins">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-gray-600 text-center">
+            {description}
+          </CardDescription>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 
 export const FeatureSection = () => {
   const features = [
     {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path>
-          <path d="M12 8v4l3 3"></path>
-        </svg>
-      ),
+      icon: <Clock size={80} strokeWidth={1.5} />,
       title: "Seasonal Planning",
-      description: "Upload images of your fields and receive AI-powered recommendations for optimal crop rotation and seasonal planning strategies."
+      description: "Upload images of your fields and receive AI-powered recommendations for optimal crop rotation and seasonal planning strategies.",
+      link: "/seasonal-planning"
     },
     {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22V8"></path>
-          <path d="M5 12H2a10 10 0 0020 0h-3"></path>
-          <path d="M8 16H4a10 10 0 0020 0M22 12h-9"></path>
-        </svg>
-      ),
+      icon: <Droplet size={80} strokeWidth={1.5} />,
       title: "Irrigation Management",
-      description: "Smart irrigation systems with real-time monitoring. Save water while improving crop yield through precision watering techniques."
+      description: "Smart irrigation systems with real-time monitoring. Save water while improving crop yield through precision watering techniques.",
+      link: "/irrigation-management"
     },
     {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-        </svg>
-      ),
+      icon: <Users size={80} strokeWidth={1.5} />,
       title: "Social Network",
-      description: "Connect with fellow farmers and agricultural experts. Share experiences, ask questions, and collaborate in our dedicated farming community."
+      description: "Connect with fellow farmers and agricultural experts. Share experiences, ask questions, and collaborate in our dedicated farming community.",
+      link: "/social-network"
     },
     {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 3v19"></path>
-          <path d="M5 8l7-5 7 5"></path>
-          <path d="M5 16l7 5 7-5"></path>
-        </svg>
-      ),
+      icon: <BarChart2 size={80} strokeWidth={1.5} />,
       title: "AI Analytics",
-      description: "Advanced analytics platform that transforms raw data into actionable insights, helping you make informed decisions for your farm."
+      description: "Advanced analytics platform that transforms raw data into actionable insights, helping you make informed decisions for your farm.",
+      link: "/ai-analytics"
     }
   ];
 
@@ -90,6 +78,7 @@ export const FeatureSection = () => {
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
+              link={feature.link}
             />
           ))}
         </div>
