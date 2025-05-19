@@ -11,10 +11,8 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Products', path: '/products' },
-    { name: 'Our Story', path: '/our-story' },
-    { name: 'About Us', path: '/about-us' },
     { name: 'Contact', path: '/contact' },
+    { name: 'About Us', path: '/#about-us' },
   ];
 
   const toggleMenu = () => {
@@ -42,9 +40,6 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <Button className="bg-farm-orange hover:bg-opacity-90 text-white">
-              Buy Now
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,9 +74,6 @@ const Navigation = () => {
               {item.name}
             </Link>
           ))}
-          <Button className="bg-farm-orange hover:bg-opacity-90 text-white w-full">
-            Buy Now
-          </Button>
         </div>
       </div>
       
