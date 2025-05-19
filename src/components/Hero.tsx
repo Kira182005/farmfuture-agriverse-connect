@@ -17,18 +17,15 @@ const Hero = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=2956&auto=format&fit=crop")',
+          backgroundImage: 'url("/lovable-uploads/d8e98d48-5125-42e7-8b1b-d55133770abf.png")',
           backgroundPosition: 'center',
-          filter: 'brightness(0.7)'
+          filter: 'brightness(0.95)'
         }}
       />
       
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
-      
       {/* Content */}
       <div className="container mx-auto px-4 relative z-20 text-center">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto backdrop-blur-sm bg-black/20 p-8 rounded-xl border border-white/20 shadow-xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-poppins animate-fade-in">
             Welcome to the place where natural flavour is born
           </h1>
@@ -45,7 +42,7 @@ const Hero = () => {
             </Button>
             <Button 
               variant="outline" 
-              className="bg-white text-farm-darkgreen hover:bg-gray-100 border-white px-8 py-6 text-lg"
+              className="bg-white/90 text-farm-darkgreen hover:bg-white border-white/90 px-8 py-6 text-lg backdrop-blur-sm"
               onClick={scrollToFeatures}
             >
               Learn More
@@ -54,8 +51,11 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce cursor-pointer" onClick={scrollToFeatures}>
+      {/* Scroll indicator with glassmorphism effect */}
+      <div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce cursor-pointer bg-white/20 backdrop-blur-sm p-3 rounded-full border border-white/20 shadow-lg" 
+        onClick={scrollToFeatures}
+      >
         <ArrowDown className="text-white h-8 w-8" />
       </div>
     </div>
