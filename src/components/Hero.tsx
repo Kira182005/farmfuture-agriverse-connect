@@ -13,7 +13,7 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-[90vh] flex items-center">
-      {/* Background Image */}
+      {/* Background Image with Extended Glassmorphism */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{ 
@@ -23,9 +23,12 @@ const Hero = () => {
         }}
       />
       
+      {/* Glassmorphism overlay covering the entire hero section */}
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/10 z-10"></div>
+      
       {/* Content */}
       <div className="container mx-auto px-4 relative z-20 text-center">
-        <div className="max-w-3xl mx-auto backdrop-blur-sm bg-black/30 p-10 rounded-xl border border-white/20 shadow-2xl">
+        <div className="max-w-3xl mx-auto backdrop-blur-md bg-black/30 p-10 rounded-xl border border-white/20 shadow-2xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-poppins animate-fade-in">
             Your Farm's Quiet Partner – Better Decisions Start Here
           </h1>

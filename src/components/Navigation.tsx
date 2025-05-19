@@ -10,21 +10,31 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'About Us', path: '/#about-us' },
+    { name: 'About Us', path: '/#about-us', isScroll: true },
   ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleNavigation = (e, item) => {
+    if (item.isScroll) {
+      e.preventDefault();
+      const section = document.getElementById(item.path.substring(2)); // Remove '/#' from the path
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+        setIsMenuOpen(false);
+      }
+    }
+  };
+
   return (
-    <nav className="bg-farm-darkgreen text-white py-4 sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-farm-darkgreen to-farm-green text-white py-4 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Text-only logo */}
+          {/* Text-only logo with premium styling */}
           <div className="flex items-center">
-            <span className="text-xl font-poppins font-semibold">FarmFuture</span>
+            <span className="text-2xl font-poppins font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-farm-cream">FarmFuture</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -33,7 +43,8 @@ const Navigation = () => {
               <Link 
                 key={item.name} 
                 to={item.path}
-                className="text-white hover:text-farm-cream transition-colors"
+                className="text-white hover:text-farm-cream transition-colors text-lg font-medium"
+                onClick={(e) => handleNavigation(e, item)}
               >
                 {item.name}
               </Link>
@@ -46,7 +57,7 @@ const Navigation = () => {
               variant="ghost" 
               size="icon"
               onClick={toggleMenu}
-              className="text-white hover:bg-farm-green"
+              className="text-white hover:bg-farm-green/50 bg-farm-green/20 backdrop-blur-sm"
             >
               <Menu />
             </Button>
@@ -57,7 +68,7 @@ const Navigation = () => {
       {/* Mobile Navigation */}
       <div 
         className={cn(
-          "fixed inset-y-0 right-0 transform bg-farm-darkgreen w-64 p-6 transition-all duration-300 ease-in-out z-50",
+          "fixed inset-y-0 right-0 transform bg-gradient-to-b from-farm-darkgreen to-farm-green w-64 p-6 transition-all duration-300 ease-in-out z-50 backdrop-blur-md",
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -67,7 +78,10 @@ const Navigation = () => {
               key={item.name} 
               to={item.path}
               className="text-white hover:text-farm-cream transition-colors text-lg"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleNavigation(e, item);
+                setIsMenuOpen(false);
+              }}
             >
               {item.name}
             </Link>
@@ -78,7 +92,7 @@ const Navigation = () => {
       {/* Backdrop for mobile menu */}
       {isMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
