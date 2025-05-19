@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import LogoWithoutText from './LogoWithoutText';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -23,9 +22,8 @@ const Navigation = () => {
     <nav className="bg-farm-darkgreen text-white py-4 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <LogoWithoutText className="w-10 h-10" />
+          {/* Text-only logo */}
+          <div className="flex items-center">
             <span className="text-xl font-poppins font-semibold">FarmFuture</span>
           </div>
 

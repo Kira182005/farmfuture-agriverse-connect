@@ -45,7 +45,7 @@ const Hero = () => {
             </Button>
             <Button 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-farm-darkgreen px-8 py-6 text-lg"
+              className="bg-white text-farm-darkgreen hover:bg-gray-100 border-white px-8 py-6 text-lg"
               onClick={scrollToFeatures}
             >
               Learn More
