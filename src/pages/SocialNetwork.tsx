@@ -1,13 +1,40 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, MessageCircle, Heart, Share2, PlusCircle } from 'lucide-react';
+import { Users, MessageCircle, Heart, Share2, PlusCircle, Image } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
-const posts = [
+interface PostImage {
+  url: string;
+  alt: string;
+}
+
+interface Comment {
+  id: number;
+  author: string;
+  avatar: string;
+  content: string;
+  time: string;
+}
+
+interface Post {
+  id: number;
+  author: string;
+  avatar: string;
+  time: string;
+  content: string;
+  likes: number;
+  comments: Comment[];
+  shares: number;
+  image?: PostImage;
+}
+
+const initialPosts: Post[] = [
   {
     id: 1,
     author: "Emma Johnson",
@@ -15,7 +42,15 @@ const posts = [
     time: "2 hours ago",
     content: "Has anyone tried the new drought-resistant corn variety? Looking for feedback before planting next season.",
     likes: 24,
-    comments: 8,
+    comments: [
+      {
+        id: 1,
+        author: "Michael Chen",
+        avatar: "/placeholder.svg",
+        content: "I tried it last season. Good yield even with minimal rainfall!",
+        time: "1 hour ago"
+      }
+    ],
     shares: 3
   },
   {
@@ -25,7 +60,15 @@ const posts = [
     time: "Yesterday",
     content: "Excited to share that our farm's organic certification has been approved! Happy to answer any questions about the process for anyone considering it.",
     likes: 56,
-    comments: 13,
+    comments: [
+      {
+        id: 1,
+        author: "Sarah Williams",
+        avatar: "/placeholder.svg",
+        content: "Congratulations! How long did the process take?",
+        time: "20 hours ago"
+      }
+    ],
     shares: 7
   },
   {
@@ -35,7 +78,7 @@ const posts = [
     time: "2 days ago",
     content: "Has anyone found an effective natural solution for aphid control in apple orchards? Our trees are struggling this season.",
     likes: 18,
-    comments: 21,
+    comments: [],
     shares: 2
   }
 ];
@@ -47,6 +90,111 @@ const topExperts = [
 ];
 
 const SocialNetwork = () => {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [newPostContent, setNewPostContent] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [commentContents, setCommentContents] = useState<{[key: number]: string}>({});
+  const [showComments, setShowComments] = useState<{[key: number]: boolean}>({});
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+      
+      // Create a preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      
+      toast.success("Image selected successfully!");
+    }
+  };
+  
+  const handleCreatePost = () => {
+    if (!newPostContent.trim() && !selectedImage) {
+      toast.error("Please add some content or an image to your post");
+      return;
+    }
+    
+    const newPost: Post = {
+      id: Date.now(),
+      author: "Current User",
+      avatar: "/placeholder.svg",
+      time: "Just now",
+      content: newPostContent,
+      likes: 0,
+      comments: [],
+      shares: 0,
+      image: selectedImage ? {
+        url: imagePreview as string,
+        alt: "User uploaded image"
+      } : undefined
+    };
+    
+    setPosts([newPost, ...posts]);
+    setNewPostContent('');
+    setSelectedImage(null);
+    setImagePreview(null);
+    toast.success("Post created successfully!");
+  };
+  
+  const toggleComments = (postId: number) => {
+    setShowComments(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+  };
+  
+  const handleAddComment = (postId: number) => {
+    const commentContent = commentContents[postId];
+    
+    if (!commentContent || !commentContent.trim()) {
+      toast.error("Please enter a comment");
+      return;
+    }
+    
+    const newComment: Comment = {
+      id: Date.now(),
+      author: "Current User",
+      avatar: "/placeholder.svg",
+      content: commentContent,
+      time: "Just now"
+    };
+    
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          comments: [...post.comments, newComment]
+        };
+      }
+      return post;
+    }));
+    
+    // Clear the comment input for this post
+    setCommentContents(prev => ({
+      ...prev,
+      [postId]: ''
+    }));
+    
+    toast.success("Comment added successfully!");
+  };
+  
+  const handleLike = (postId: number) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          likes: post.likes + 1
+        };
+      }
+      return post;
+    }));
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -65,15 +213,55 @@ const SocialNetwork = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <textarea 
+                    <Textarea 
                       className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-farm-darkgreen min-h-24"
                       placeholder="Share your farming experience or ask a question..."
-                    ></textarea>
+                      value={newPostContent}
+                      onChange={(e) => setNewPostContent(e.target.value)}
+                    />
+                    
+                    {imagePreview && (
+                      <div className="relative">
+                        <img 
+                          src={imagePreview} 
+                          alt="Selected preview" 
+                          className="max-h-60 rounded-md mx-auto"
+                        />
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={() => {
+                            setSelectedImage(null);
+                            setImagePreview(null);
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    )}
+                    
                     <div className="flex justify-between">
-                      <Button variant="outline" className="border-farm-darkgreen text-farm-darkgreen hover:bg-farm-darkgreen hover:text-white">
-                        Add Photo
-                      </Button>
-                      <Button className="bg-farm-orange hover:bg-opacity-90">
+                      <label className="cursor-pointer">
+                        <Input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden"
+                          onChange={handleImageSelect}
+                        />
+                        <Button 
+                          variant="outline" 
+                          type="button"
+                          className="border-farm-darkgreen text-farm-darkgreen hover:bg-farm-darkgreen hover:text-white"
+                        >
+                          <Image size={18} className="mr-2" />
+                          Add Photo
+                        </Button>
+                      </label>
+                      <Button 
+                        className="bg-farm-orange hover:bg-opacity-90"
+                        onClick={handleCreatePost}
+                      >
                         Post
                       </Button>
                     </div>
@@ -95,18 +283,85 @@ const SocialNetwork = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="mb-6">{post.content}</p>
-                    <div className="flex justify-between border-t pt-4">
-                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-farm-darkgreen">
+                    <p className="mb-4">{post.content}</p>
+                    
+                    {post.image && (
+                      <div className="mb-6">
+                        <img 
+                          src={post.image.url} 
+                          alt={post.image.alt}
+                          className="rounded-md max-h-96 mx-auto"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between border-t pt-4 mb-4">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-gray-600 hover:text-farm-darkgreen"
+                        onClick={() => handleLike(post.id)}
+                      >
                         <Heart size={18} className="mr-1" /> {post.likes}
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-farm-darkgreen">
-                        <MessageCircle size={18} className="mr-1" /> {post.comments}
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-gray-600 hover:text-farm-darkgreen"
+                        onClick={() => toggleComments(post.id)}
+                      >
+                        <MessageCircle size={18} className="mr-1" /> {post.comments.length}
                       </Button>
                       <Button variant="ghost" size="sm" className="text-gray-600 hover:text-farm-darkgreen">
                         <Share2 size={18} className="mr-1" /> {post.shares}
                       </Button>
                     </div>
+                    
+                    {/* Comments Section */}
+                    {showComments[post.id] && (
+                      <div className="border-t pt-4">
+                        <h4 className="font-semibold mb-2">Comments</h4>
+                        {post.comments.map((comment) => (
+                          <div key={comment.id} className="flex gap-2 mb-3">
+                            <Avatar className="w-8 h-8">
+                              <img src={comment.avatar} alt={comment.author} className="rounded-full" />
+                            </Avatar>
+                            <div className="flex-1 bg-gray-100 p-2 rounded-md">
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium text-sm">{comment.author}</span>
+                                <span className="text-xs text-gray-500">{comment.time}</span>
+                              </div>
+                              <p className="text-sm">{comment.content}</p>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        {/* Add Comment */}
+                        <div className="flex gap-2 mt-4">
+                          <Avatar className="w-8 h-8">
+                            <img src="/placeholder.svg" alt="Current User" className="rounded-full" />
+                          </Avatar>
+                          <div className="flex-1">
+                            <Input
+                              placeholder="Write a comment..."
+                              value={commentContents[post.id] || ''}
+                              onChange={(e) => setCommentContents(prev => ({
+                                ...prev,
+                                [post.id]: e.target.value
+                              }))}
+                              className="mb-2"
+                            />
+                            <Button
+                              size="sm"
+                              className="bg-farm-darkgreen hover:bg-opacity-90"
+                              onClick={() => handleAddComment(post.id)}
+                            >
+                              Add Comment
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}

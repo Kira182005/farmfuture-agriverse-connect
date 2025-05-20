@@ -1,12 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Clock } from 'lucide-react';
+import { Clock, Image } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 const seasonalData = [
   { month: 'Jan', yield: 30 },
@@ -24,6 +26,25 @@ const seasonalData = [
 ];
 
 const SeasonalPlanning = () => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+      
+      // Create a preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      
+      toast.success("Field image uploaded successfully!");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -67,12 +88,50 @@ const SeasonalPlanning = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col items-center gap-4">
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 w-full flex flex-col items-center justify-center">
-                      <p className="text-gray-500 mb-2">Upload an image of your field</p>
-                      <Button className="bg-farm-orange hover:bg-opacity-90">
-                        Upload Image
-                      </Button>
-                    </div>
+                    {imagePreview ? (
+                      <div className="relative w-full">
+                        <img 
+                          src={imagePreview} 
+                          alt="Field preview" 
+                          className="w-full h-auto rounded-lg border border-gray-300"
+                        />
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={() => {
+                            setSelectedImage(null);
+                            setImagePreview(null);
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 w-full flex flex-col items-center justify-center">
+                        <p className="text-gray-500 mb-4">Upload an image of your field</p>
+                        <label className="cursor-pointer">
+                          <Input 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden"
+                            onChange={handleImageSelect}
+                          />
+                          <Button className="bg-farm-orange hover:bg-opacity-90">
+                            <Image size={18} className="mr-2" />
+                            Upload Image
+                          </Button>
+                        </label>
+                      </div>
+                    )}
+                    
+                    {selectedImage && (
+                      <div className="w-full">
+                        <p className="text-sm text-green-600 font-medium">
+                          Image uploaded successfully! Our AI system will analyze your field and provide recommendations.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
