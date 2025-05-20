@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import LogoWithoutText from './LogoWithoutText';
 
 const Footer = () => {
   return (
@@ -10,10 +9,7 @@ const Footer = () => {
       <div className="farm-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <div className="flex items-center mb-4">
-              <LogoWithoutText className="w-10 h-10 mr-3" />
-              <h3 className="text-2xl font-bold">FarmFuture</h3>
-            </div>
+            <h3 className="text-2xl font-bold mb-4">FarmFuture</h3>
             <p className="text-gray-300 mb-4">
               Revolutionizing agriculture through technology and community wisdom.
             </p>

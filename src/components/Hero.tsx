@@ -19,13 +19,13 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative min-h-[90vh] flex items-center">
-      {/* Background Image with Extended Glassmorphism */}
+    <div className="relative h-screen w-full flex items-center">
+      {/* Background Image with Extended Coverage */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 w-full h-full"
         style={{ 
           backgroundImage: 'url("/lovable-uploads/aa902b68-aac4-4200-b8d6-c94c15f42c38.png")',
-          backgroundPosition: 'center',
+          backgroundSize: 'cover',
           filter: 'brightness(0.95)'
         }}
       />
