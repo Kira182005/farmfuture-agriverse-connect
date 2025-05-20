@@ -2,13 +2,20 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   const scrollToFeatures = () => {
     const featuresSection = document.getElementById("features");
     if (featuresSection) {
       featuresSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const goToSeasonalPlanning = () => {
+    navigate('/seasonal-planning');
   };
 
   return (
@@ -39,7 +46,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <Button 
               className="bg-farm-orange hover:bg-opacity-90 text-white px-8 py-6 text-lg"
-              onClick={() => window.location.href = '/products'}
+              onClick={goToSeasonalPlanning}
             >
               Explore Our Products
             </Button>
