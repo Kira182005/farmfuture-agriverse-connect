@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, LogIn } from "lucide-react";
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -28,6 +29,11 @@ const Navigation = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="bg-gradient-to-r from-farm-darkgreen to-farm-green text-white py-4 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
@@ -38,7 +44,7 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link 
                 key={item.name} 
@@ -49,6 +55,14 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
+            <Button 
+              variant="outline" 
+              className="bg-white/10 text-white hover:bg-white/20 border-white/30"
+              onClick={handleLoginClick}
+            >
+              <LogIn className="mr-2 h-4 w-4" />
+              Log In
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -86,6 +100,14 @@ const Navigation = () => {
               {item.name}
             </Link>
           ))}
+          <Button 
+            variant="outline" 
+            className="bg-white/10 text-white hover:bg-white/20 border-white/30 w-full justify-start"
+            onClick={handleLoginClick}
+          >
+            <LogIn className="mr-2 h-4 w-4" />
+            Log In
+          </Button>
         </div>
       </div>
       
