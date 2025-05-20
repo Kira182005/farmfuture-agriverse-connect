@@ -36,7 +36,7 @@ const SeasonalPlanning = () => {
       
       // Create a preview
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onloadend = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);

@@ -1,13 +1,24 @@
+
 import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, MessageCircle, Heart, Share2, PlusCircle, Image } from 'lucide-react';
+import { Users, MessageCircle, Heart, Share2, PlusCircle, Image, Trash2 } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface PostImage {
   url: string;
@@ -96,6 +107,7 @@ const SocialNetwork = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [commentContents, setCommentContents] = useState<{[key: number]: string}>({});
   const [showComments, setShowComments] = useState<{[key: number]: boolean}>({});
+  const [postToDelete, setPostToDelete] = useState<number | null>(null);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -104,7 +116,7 @@ const SocialNetwork = () => {
       
       // Create a preview
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onloadend = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
@@ -195,6 +207,22 @@ const SocialNetwork = () => {
     }));
   };
 
+  const handleDeletePost = (postId: number) => {
+    setPostToDelete(postId);
+  };
+
+  const confirmDeletePost = () => {
+    if (postToDelete !== null) {
+      setPosts(posts.filter(post => post.id !== postToDelete));
+      setPostToDelete(null);
+      toast.success("Post deleted successfully!");
+    }
+  };
+
+  const cancelDeletePost = () => {
+    setPostToDelete(null);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -272,14 +300,24 @@ const SocialNetwork = () => {
               {posts.map(post => (
                 <Card key={post.id} className="shadow-lg">
                   <CardHeader>
-                    <div className="flex gap-3">
-                      <Avatar>
-                        <img src={post.avatar} alt={post.author} className="rounded-full" />
-                      </Avatar>
-                      <div>
-                        <CardTitle className="text-lg">{post.author}</CardTitle>
-                        <CardDescription>{post.time}</CardDescription>
+                    <div className="flex justify-between">
+                      <div className="flex gap-3">
+                        <Avatar>
+                          <img src={post.avatar} alt={post.author} className="rounded-full" />
+                        </Avatar>
+                        <div>
+                          <CardTitle className="text-lg">{post.author}</CardTitle>
+                          <CardDescription>{post.time}</CardDescription>
+                        </div>
                       </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleDeletePost(post.id)}
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <Trash2 size={18} />
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -442,6 +480,27 @@ const SocialNetwork = () => {
         </div>
       </main>
       <Footer />
+
+      {/* Delete Post Confirmation Dialog */}
+      <AlertDialog open={postToDelete !== null} onOpenChange={cancelDeletePost}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your post.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDeletePost}>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDeletePost}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
