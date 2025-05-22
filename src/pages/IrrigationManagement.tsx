@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Droplet } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 const irrigationData = [
   { date: '06/01', moisture: 65, rainfall: 12, irrigation: 30 },
@@ -41,8 +41,8 @@ const IrrigationManagement = () => {
               <CardHeader>
                 <CardTitle>Soil Moisture & Irrigation Data</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
+              <CardContent className="pb-6">
+                <div className="w-full" style={{ height: '380px' }}>
                   <ChartContainer 
                     config={{ 
                       moisture: { theme: { light: '#1B5E20', dark: '#4CAF50' } },
@@ -50,12 +50,15 @@ const IrrigationManagement = () => {
                       irrigation: { theme: { light: '#FF9800', dark: '#F57C00' } }
                     }}
                   >
-                    <LineChart data={irrigationData}>
-                      <XAxis dataKey="date" />
-                      <YAxis />
+                    <LineChart 
+                      data={irrigationData} 
+                      margin={{ top: 5, right: 5, bottom: 5, left: 0 }}
+                    >
+                      <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                      <YAxis tick={{ fontSize: 11 }} width={30} />
                       <CartesianGrid strokeDasharray="3 3" />
                       <ChartTooltip content={<ChartTooltipContent />} />
-                      <Line type="monotone" dataKey="moisture" stroke="#1B5E20" activeDot={{ r: 8 }} strokeWidth={2} />
+                      <Line type="monotone" dataKey="moisture" stroke="#1B5E20" activeDot={{ r: 6 }} strokeWidth={2} />
                       <Line type="monotone" dataKey="rainfall" stroke="#3498db" strokeDasharray="5 5" />
                       <Line type="monotone" dataKey="irrigation" stroke="#FF9800" />
                     </LineChart>

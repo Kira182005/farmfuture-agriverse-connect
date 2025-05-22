@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Clock, Image } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
@@ -60,18 +60,21 @@ const SeasonalPlanning = () => {
               <CardHeader>
                 <CardTitle>Crop Yield Forecast</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
+              <CardContent className="pb-6">
+                <div className="w-full" style={{ height: '380px' }}>
                   <ChartContainer config={{ yield: { theme: { light: '#1B5E20', dark: '#4CAF50' } } }}>
-                    <AreaChart data={seasonalData}>
+                    <AreaChart 
+                      data={seasonalData}
+                      margin={{ top: 5, right: 5, bottom: 5, left: 0 }}
+                    >
                       <defs>
                         <linearGradient id="colorYield" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#1B5E20" stopOpacity={0.8}/>
                           <stop offset="95%" stopColor="#1B5E20" stopOpacity={0.1}/>
                         </linearGradient>
                       </defs>
-                      <XAxis dataKey="month" />
-                      <YAxis />
+                      <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                      <YAxis tick={{ fontSize: 11 }} width={30} />
                       <CartesianGrid strokeDasharray="3 3" />
                       <ChartTooltip content={<ChartTooltipContent />} />
                       <Area type="monotone" dataKey="yield" stroke="#1B5E20" fillOpacity={1} fill="url(#colorYield)" />
