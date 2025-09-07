@@ -113,18 +113,20 @@ const SeasonalPlanning = () => {
                     ) : (
                       <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 w-full flex flex-col items-center justify-center">
                         <p className="text-gray-500 mb-4">Upload an image of your field</p>
-                        <label className="cursor-pointer">
-                          <Input 
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden"
-                            onChange={handleImageSelect}
-                          />
-                          <Button className="bg-farm-orange hover:bg-opacity-90">
-                            <Image size={18} className="mr-2" />
-                            Upload Image
-                          </Button>
-                        </label>
+                        <Input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden"
+                          onChange={handleImageSelect}
+                          id="file-upload"
+                        />
+                        <Button 
+                          className="bg-farm-orange hover:bg-opacity-90"
+                          onClick={() => document.getElementById('file-upload')?.click()}
+                        >
+                          <Image size={18} className="mr-2" />
+                          Upload Image
+                        </Button>
                       </div>
                     )}
                     
