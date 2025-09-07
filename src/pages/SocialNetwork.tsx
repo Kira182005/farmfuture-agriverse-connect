@@ -115,6 +115,7 @@ const SocialNetwork = () => {
   const [commentContents, setCommentContents] = useState<{[key: number]: string}>({});
   const [showComments, setShowComments] = useState<{[key: number]: boolean}>({});
   const [postToDelete, setPostToDelete] = useState<number | null>(null);
+  const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -203,6 +204,11 @@ const SocialNetwork = () => {
   };
   
   const handleLike = (postId: number) => {
+    if (likedPosts.has(postId)) {
+      toast.error("You have already liked this post");
+      return;
+    }
+    
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return {
@@ -212,6 +218,9 @@ const SocialNetwork = () => {
       }
       return post;
     }));
+    
+    setLikedPosts(prev => new Set([...prev, postId]));
+    toast.success("Post liked!");
   };
 
   const handleDeletePost = (postId: number) => {
@@ -346,10 +355,11 @@ const SocialNetwork = () => {
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="text-gray-600 hover:text-farm-darkgreen"
+                        className={`${likedPosts.has(post.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-600 hover:text-farm-darkgreen'}`}
                         onClick={() => handleLike(post.id)}
+                        disabled={likedPosts.has(post.id)}
                       >
-                        <Heart size={18} className="mr-1" /> {post.likes}
+                        <Heart size={18} className={`mr-1 ${likedPosts.has(post.id) ? 'fill-current' : ''}`} /> {post.likes}
                       </Button>
                       <Button 
                         variant="ghost" 
