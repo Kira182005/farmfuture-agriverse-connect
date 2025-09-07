@@ -7,6 +7,8 @@ import farmerProfile2 from '@/assets/farmer-profile-2.jpg';
 import farmerProfile3 from '@/assets/farmer-profile-3.jpg';
 import farmerProfile4 from '@/assets/farmer-profile-4.jpg';
 import farmerProfile5 from '@/assets/farmer-profile-5.jpg';
+import farmerProfile6 from '@/assets/farmer-profile-6.jpg';
+import farmerProfile7 from '@/assets/farmer-profile-7.jpg';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Users, MessageCircle, Heart, Share2, PlusCircle, Image, Trash2 } from 'lucide-react';
@@ -101,7 +103,7 @@ const initialPosts: Post[] = [
 
 const topExperts = [
   { name: "Dr. James Wilson", specialty: "Sustainable Agriculture", avatar: farmerProfile4 },
-  { name: "Maria Rodriguez", specialty: "Organic Farming", avatar: farmerProfile1 },
+  { name: "Maria Rodriguez", specialty: "Organic Farming", avatar: farmerProfile6 },
   { name: "Robert Thomson", specialty: "Irrigation Systems", avatar: farmerProfile5 }
 ];
 
@@ -139,7 +141,7 @@ const SocialNetwork = () => {
     const newPost: Post = {
       id: Date.now(),
       author: "Current User",
-      avatar: farmerProfile5,
+      avatar: farmerProfile7,
       time: "Just now",
       content: newPostContent,
       likes: 0,
@@ -176,7 +178,7 @@ const SocialNetwork = () => {
     const newComment: Comment = {
       id: Date.now(),
       author: "Current User",
-      avatar: farmerProfile5,
+      avatar: farmerProfile7,
       content: commentContent,
       time: "Just now"
     };
@@ -384,7 +386,7 @@ const SocialNetwork = () => {
                         {/* Add Comment */}
                         <div className="flex gap-2 mt-4">
                           <Avatar className="w-8 h-8">
-                            <img src={farmerProfile5} alt="Current User" className="rounded-full" />
+                            <img src={farmerProfile7} alt="Current User" className="rounded-full" />
                           </Avatar>
                           <div className="flex-1">
                             <Input
