@@ -270,22 +270,24 @@ const SocialNetwork = () => {
                     )}
                     
                     <div className="flex justify-between">
-                      <label className="cursor-pointer">
+                      <div>
                         <Input 
                           type="file" 
                           accept="image/*" 
                           className="hidden"
                           onChange={handleImageSelect}
+                          id="photo-upload"
                         />
                         <Button 
                           variant="outline" 
                           type="button"
                           className="border-farm-darkgreen text-farm-darkgreen hover:bg-farm-darkgreen hover:text-white"
+                          onClick={() => document.getElementById('photo-upload')?.click()}
                         >
                           <Image size={18} className="mr-2" />
                           Add Photo
                         </Button>
-                      </label>
+                      </div>
                       <Button 
                         className="bg-farm-orange hover:bg-opacity-90"
                         onClick={handleCreatePost}
